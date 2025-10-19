@@ -180,7 +180,7 @@ _requirements() {
     "ethers.js" \
     "${_commit}"
   mv \
-    "${HOME}/${_pkgname}-${_commit}.tar.gz" \
+    "${HOME}/ethers.js-${_commit}.tar.gz" \
     "/home/user/${_pkgname}"
 }
 
