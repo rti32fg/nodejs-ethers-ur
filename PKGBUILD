@@ -33,7 +33,7 @@ fi
 if [[ ! -v "_git" ]]; then
   _git="false"
 fi
-if [[ !-v "_git_http" ]]; then
+if [[ ! -v "_git_http" ]]; then
   _git_http="gitlab"
 fi
 _pkg=ethers
@@ -77,6 +77,7 @@ _git_sig_sum="ac168c73698197e4b70125e5a6fd1afb962bc28d78075f3c498035cf8f973094"
 _github_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
 if [[ "${_source}" == "npm" ]]; then
   _src="${_npm}/${_pkg}/-/${_pkg}-${pkgver}.tgz"
+  _sum="${_npm_sum}"
 elif [[ "${_source}" == "git" ]]; then
   _src="${url}/archive/refs/tags/v${pkgver}.tar.gz"
   if [[ "${_git}" == "true" ]]; then
