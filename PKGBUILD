@@ -19,13 +19,24 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Maintainer: Truocolo <truocolo@aol.com>
-# Maintainer: Truocolo <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
-# Maintainer: Pellegrino Prevete (dvorak) <pellegrinoprevete@gmail.com>
-# Maintainer: Pellegrino Prevete (dvorak) <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
+# Maintainers:
+#   Truocolo
+#     <truocolo@aol.com>
+#     <truocolo@0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b>
+#   Pellegrino Prevete (dvorak)
+#     <pellegrinoprevete@gmail.com>
+#     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
-_source="npm"
-_pkg="ethers"
+if [[ ! -v "_source" ]]; then
+  _source="npm"
+fi
+if [[ ! -v "_git" ]]; then
+  _git="false"
+fi
+if [[ !-v "_git_http" ]]; then
+  _git_http="gitlab"
+fi
+_pkg=ethers
 pkgname="nodejs-${_pkg}"
 pkgver=6.13.2
 pkgrel=1
@@ -58,19 +69,31 @@ conflicts=(
   "${_pkg}"
 )
 _npm="https://registry.npmjs.org"
+_tarname="${_pkg}-${pkgver}"
+_npm_sum="f6c68a31f674674e4aed782c4f08d7a4ec8bc04738eee38d3e22ec94e129000e"
+_npm_sig_sum="56813cbbae6ea01f6e2028ca3834404ef80731924b39b12460155590d6740b58"
+_git_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
+_git_sig_sum="ac168c73698197e4b70125e5a6fd1afb962bc28d78075f3c498035cf8f973094"
+_github_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
 if [[ "${_source}" == "npm" ]]; then
   _src="${_npm}/${_pkg}/-/${_pkg}-${pkgver}.tgz"
-  _sum="ciao"
-elif [[ "${_source}" == "github" ]]; then
+elif [[ "${_source}" == "git" ]]; then
   _src="${url}/archive/refs/tags/v${pkgver}.tar.gz"
-  _sum="ciao"
+  if [[ "${_git}" == "true" ]]; then
+    _sum="${_git_sum}"
+    if [[ "${_git_http}" == "gitlab" ]]; then
+      _sig_sum="${_git_sig_sum}"
+    elif [[ "${_git_http}" == "github" ]]; then
+      _sum="${_github_sum}"
+    fi
+  fi
 fi
 source=(
   "${_src}"
   "LICENSE"
 )
 noextract=(
-  "${_pkg}-${pkgver}.tgz"
+  "${_tarname}.tgz"
 )
 sha256sums=(
   "${_sum}"
