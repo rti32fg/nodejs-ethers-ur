@@ -39,14 +39,39 @@ if [[ ! -v "_evmfs" ]]; then
     _evmfs="false"
   fi
 fi
+if [[ ! -v "_npm" ]]; then
+  _npm="true"
+fi
 if [[ ! -v "_source" ]]; then
-  _source="npm"
+  if [[ "${_npm}" == "true" ]]; then
+    _source="npm"
+  elif [[ "${_npm}" == "true" ]]; then
+    _source="github"
+  fi
 fi
 if [[ ! -v "_git" ]]; then
   _git="false"
 fi
 if [[ ! -v "_git_http" ]]; then
-  _git_http="gitlab"
+  _git_http="github"
+fi
+if [[ ! -v "_archive_format" ]]; then
+  if [[ "${_npm}" == "true" ]]; then
+    _archive_format="tgz"
+  elif [[ "${_npm}" == "false" ]]; then
+    if [[ "${_evmfs}" == "true" ]]; then
+      if [[ "${_git}" == "true" ]]; then
+        _archive_format="bundle"
+      elif [[ "${_git}" == "false" ]]; then
+        _archive_format="tar.gz"
+      fi
+    elif [[ "${_evmfs}" == "false" ]]; then
+      _archive_format="tar.gz"
+      if [[ "${_git_http}" == "github" ]]; then
+        _archive_format="zip"
+      fi
+    fi
+  fi
 fi
 _node="nodejs"
 _pkg=ethers
@@ -63,7 +88,7 @@ arch=(
   # 'x86_64'
   "any"
 )
-_http="https://github.com"
+_http="https://${_git_http}.com"
 _ns="ethers-io"
 url="${_http}/${_ns}/${_pkg}.js"
 license=(
@@ -72,9 +97,12 @@ license=(
 depends=(
   "${_node}"
 )
-makedepends=(
-  'npm'
-)
+makedepends=()
+if [[ "${_npm}" == "true" ]]; then
+  makedepends+=(
+    'npm'
+  )
+fi
 provides=(
   "${_pkg}=${pkgver}"
 )
@@ -83,43 +111,65 @@ conflicts=(
 )
 _npm="https://registry.npmjs.org"
 _tarname="${_pkg}-${pkgver}"
+_tarfile="${_tarname}.${_archive_format}"
 _npm_sum="f6c68a31f674674e4aed782c4f08d7a4ec8bc04738eee38d3e22ec94e129000e"
 _npm_sig_sum="56813cbbae6ea01f6e2028ca3834404ef80731924b39b12460155590d6740b58"
 _github_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
 _github_sig_sum="ac168c73698197e4b70125e5a6fd1afb962bc28d78075f3c498035cf8f973094"
-if [[ "${_source}" == "npm" ]]; then
-  _src="${_npm}/${_pkg}/-/${_tarname}.tgz"
-  _sum="${_npm_sum}"
-elif [[ "${_source}" == "git" ]]; then
-  _src="${url}/archive/refs/tags/v${pkgver}.tar.gz"
-  if [[ "${_git}" == "true" ]]; then
-    _sum="${_git_sum}"
-    if [[ "${_git_http}" == "gitlab" ]]; then
-      _sig_sum="${_git_sig_sum}"
-    elif [[ "${_git_http}" == "github" ]]; then
-      _sum="${_github_sum}"
-    fi
-  fi
-fi
 source=(
-  "${_src}"
   "LICENSE"
 )
-noextract=(
-  "${_tarname}.tgz"
-)
 sha256sums=(
-  "${_sum}"
   '48da2f39e100d4085767e94966b43f4fa95ff6a0698fba57ed460914e35f94a0'
 )
+if [[ "${_evmfs}" == "true" ]]; then
+  if [[ "${_npm}" == "true" ]]; then
+    _uri="${_evmfs_npm_uri}"
+    _sum="${_npm_sum}"
+    _sig_src="${_npm_sig_src}"
+    _sig_sum="${_npm_sig_sum}"
+  elif [[ "${_npm}" == "false" ]]; then
+    if [[ "${_git}" == "true" ]]; then
+      _uri="${_bundle_uri}"
+      _sum="${_bundle_sum}"
+      _sig_src="${_bundle_sig_src}"
+      _sig_sum="${_bundle_sig_sum}"
+    elif [[ "${_git}" == "false" ]]; then
+      _uri="${_evmfs_uri}"
+      _sig_src="${_evmfs_sig_src}"
+    fi
+  fi
+  source+=(
+    "${_sig_src}"
+  )
+  sha256sums+=(
+    "${_sig_sum}"
+  )
+elif [[ "${_evmfs}" == "false" ]]; then
+  if [[ "${_npm}" == "true" ]]; then
+    _uri="${_npm_http}/@${_ns}/${_pkg}/-/${_tarfile}"
+  elif [[ "${_npm}" == "false" ]]; then
+    _uri="${url}"
+  fi
+fi
+_src="${_tarfile}::${_uri}"
+source+=(
+  "${_src}"
+)
+sha256sums+=(
+  "${_sum}"
+)
+if [[ "${_npm}" == "true" ]]; then
+  noextract=(
+    "${_tarfile}"
+  )
+fi
 
 package() {
   local \
     _npmdir \
     _npm_opts=() 
   _npm_opts=(
-    # --user
-    #   root
     -g
     --prefix
       "${pkgdir}/usr"
@@ -138,5 +188,5 @@ package() {
   npm \
     install \
       "${_npm_opts[@]}" \
-      "${srcdir}/${_tarname}.tgz"
+      "${srcdir}/${_tarfile}"
 }
