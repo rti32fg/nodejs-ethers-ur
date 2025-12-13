@@ -27,6 +27,18 @@
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
+_evmfs_available="$( \
+  command \
+    -v \
+    "evmfs" || \
+    true)"
+if [[ ! -v "_evmfs" ]]; then
+  if [[ "${_evmfs_available}" != "" ]]; then
+    _evmfs="true"
+  elif [[ "${_evmfs_available}" == "" ]]; then
+    _evmfs="false"
+  fi
+fi
 if [[ ! -v "_source" ]]; then
   _source="npm"
 fi
@@ -36,10 +48,11 @@ fi
 if [[ ! -v "_git_http" ]]; then
   _git_http="gitlab"
 fi
+_node="nodejs"
 _pkg=ethers
-pkgname="nodejs-${_pkg}"
+pkgname="${_node}-${_pkg}"
 pkgver=6.13.2
-pkgrel=1
+pkgrel=2
 _pkgdesc=(
   "A complete, compact and simple library"
   "for Ethereum and ilk, written in TypeScript."
@@ -48,7 +61,7 @@ pkgdesc="${_pkgdesc[*]}"
 arch=(
   # 'i686'
   # 'x86_64'
-  any
+  "any"
 )
 _http="https://github.com"
 _ns="ethers-io"
@@ -57,7 +70,7 @@ license=(
   "MIT"
 )
 depends=(
-  'nodejs'
+  "${_node}"
 )
 makedepends=(
   'npm'
@@ -127,6 +140,5 @@ package() {
     install \
       "${_npm_opts[@]}" \
       "${srcdir}/${_tarname}.tgz"
-      # "${srcdir}/${_pkg}.js-${pkgver}"
 }
 
