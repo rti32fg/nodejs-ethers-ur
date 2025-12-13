@@ -85,9 +85,8 @@ _npm="https://registry.npmjs.org"
 _tarname="${_pkg}-${pkgver}"
 _npm_sum="f6c68a31f674674e4aed782c4f08d7a4ec8bc04738eee38d3e22ec94e129000e"
 _npm_sig_sum="56813cbbae6ea01f6e2028ca3834404ef80731924b39b12460155590d6740b58"
-_git_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
-_git_sig_sum="ac168c73698197e4b70125e5a6fd1afb962bc28d78075f3c498035cf8f973094"
 _github_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
+_github_sig_sum="ac168c73698197e4b70125e5a6fd1afb962bc28d78075f3c498035cf8f973094"
 if [[ "${_source}" == "npm" ]]; then
   _src="${_npm}/${_pkg}/-/${_tarname}.tgz"
   _sum="${_npm_sum}"
@@ -141,4 +140,3 @@ package() {
       "${_npm_opts[@]}" \
       "${srcdir}/${_tarname}.tgz"
 }
-
