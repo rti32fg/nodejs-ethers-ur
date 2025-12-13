@@ -119,6 +119,7 @@ _bundle_sum="SKIP"
 _bundle_sig_sum="SKIP"
 if [[ "${_npm}" == "true" ]]; then
   _sum="${_npm_sum}"
+  _sig_sum="${_npm_sig_sum}"
 fi
 # Dvorak
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
