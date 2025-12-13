@@ -109,13 +109,14 @@ provides=(
 conflicts=(
   "${_pkg}"
 )
-_npm="https://registry.npmjs.org"
 _tarname="${_pkg}-${pkgver}"
 _tarfile="${_tarname}.${_archive_format}"
 _npm_sum="f6c68a31f674674e4aed782c4f08d7a4ec8bc04738eee38d3e22ec94e129000e"
 _npm_sig_sum="56813cbbae6ea01f6e2028ca3834404ef80731924b39b12460155590d6740b58"
 _github_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
 _github_sig_sum="ac168c73698197e4b70125e5a6fd1afb962bc28d78075f3c498035cf8f973094"
+_bundle_sum="SKIP"
+_bundle_sig_sum="SKIP"
 if [[ "${_npm}" == "true" ]]; then
   _sum="${_npm_sum}"
 fi
@@ -129,7 +130,7 @@ _evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
 _evmfs_uri="${_evmfs_dir}/${_sum}"
 _evmfs_src="${_tarfile}::${_evmfs_uri}"
 _bundle_uri="${_evmfs_dir}/${_bundle_sum}"
-_bundle_src="${_tarfile}::${_evmfs_npm_uri}"
+_bundle_src="${_tarfile}::${_bundle_uri}"
 _evmfs_npm_uri="${_evmfs_dir}/${_npm_sum}"
 _evmfs_npm_src="${_tarfile}::${_evmfs_npm_uri}"
 _evmfs_sig_uri="${_evmfs_dir}/${_sig_sum}"
@@ -139,7 +140,6 @@ _bundle_sig_src="${_tarfile}.sig::${_bundle_sig_uri}"
 _npm_sig_uri="${_evmfs_dir}/${_npm_sig_sum}"
 _npm_sig_src="${_tarfile}.sig::${_npm_sig_uri}"
 _npm_http="http://registry.npmjs.org"
-
 source=(
   "LICENSE"
 )
