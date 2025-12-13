@@ -116,6 +116,30 @@ _npm_sum="f6c68a31f674674e4aed782c4f08d7a4ec8bc04738eee38d3e22ec94e129000e"
 _npm_sig_sum="56813cbbae6ea01f6e2028ca3834404ef80731924b39b12460155590d6740b58"
 _github_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
 _github_sig_sum="ac168c73698197e4b70125e5a6fd1afb962bc28d78075f3c498035cf8f973094"
+if [[ "${_npm}" == "true" ]]; then
+  _sum="${_npm_sum}"
+fi
+# Dvorak
+_evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
+# Truocolo
+_evmfs_ns="0x6E5163fC4BFc1511Dbe06bB605cc14a3e462332b"
+_evmfs_network="100"
+_evmfs_address="0x69470b18f8b8b5f92b48f6199dcb147b4be96571"
+_evmfs_dir="evmfs://${_evmfs_network}/${_evmfs_address}/${_evmfs_ns}"
+_evmfs_uri="${_evmfs_dir}/${_sum}"
+_evmfs_src="${_tarfile}::${_evmfs_uri}"
+_bundle_uri="${_evmfs_dir}/${_bundle_sum}"
+_bundle_src="${_tarfile}::${_evmfs_npm_uri}"
+_evmfs_npm_uri="${_evmfs_dir}/${_npm_sum}"
+_evmfs_npm_src="${_tarfile}::${_evmfs_npm_uri}"
+_evmfs_sig_uri="${_evmfs_dir}/${_sig_sum}"
+_evmfs_sig_src="${_tarfile}.sig::${_evmfs_sig_uri}"
+_bundle_sig_uri="${_evmfs_dir}/${_bundle_sig_sum}"
+_bundle_sig_src="${_tarfile}.sig::${_bundle_sig_uri}"
+_npm_sig_uri="${_evmfs_dir}/${_npm_sig_sum}"
+_npm_sig_src="${_tarfile}.sig::${_npm_sig_uri}"
+_npm_http="http://registry.npmjs.org"
+
 source=(
   "LICENSE"
 )
@@ -125,7 +149,6 @@ sha256sums=(
 if [[ "${_evmfs}" == "true" ]]; then
   if [[ "${_npm}" == "true" ]]; then
     _uri="${_evmfs_npm_uri}"
-    _sum="${_npm_sum}"
     _sig_src="${_npm_sig_src}"
     _sig_sum="${_npm_sig_sum}"
   elif [[ "${_npm}" == "false" ]]; then
