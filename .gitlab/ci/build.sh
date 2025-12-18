@@ -23,7 +23,7 @@
 
 
 # This script is run within a virtual environment to build
-#  pakcage
+#  package
 # $1: platform
 # $2: architecture
 
