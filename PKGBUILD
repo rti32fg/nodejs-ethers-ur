@@ -55,8 +55,13 @@ if [[ ! -v "_source" ]]; then
   fi
 fi
 if [[ ! -v "_git" ]]; then
-  _git="false"
+  if [[ "${_npm}" == "true" ]]; then
+    _git="false"
+  elif [[ "${_npm}" == "false" ]]; then
+    _git="true"
+  fi
 fi
+
 if [[ ! -v "_git_http" ]]; then
   if [[ "${_git_service}" == "github" ]]; then
     _git_http="github"
@@ -108,10 +113,17 @@ license=(
 depends=(
   "${_node}"
 )
-makedepends=()
+makedepends=(
+  "${_node}"
+)
 if [[ "${_npm}" == "true" ]]; then
   makedepends+=(
     'npm'
+  )
+fi
+if [[ "${_git}" == "true" ]]; then
+  makedepends+=(
+    'git'
   )
 fi
 provides=(
