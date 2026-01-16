@@ -124,6 +124,16 @@ _bundle_sig_sum="SKIP"
 if [[ "${_npm}" == "true" ]]; then
   _sum="${_npm_sum}"
   _sig_sum="${_npm_sig_sum}"
+elif [[ "${_npm}" == "false" ]]; then
+  if [[ "${_git}" == "false" ]]; then
+    if [[ "${_source}" == "github" ]]; then
+      _sum="${_github_sum}"
+      _sig_sum="${_github_sig_sum}"
+    fi
+  elif [[ "${_git}" == "true" ]]; then
+    _sum="${_bundle_sum}"
+    _sig_sum="${_bundle_sig_sum}"
+  fi
 fi
 # Dvorak
 _evmfs_ns="0x87003Bd6C074C713783df04f36517451fF34CBEf"
