@@ -181,7 +181,7 @@ _requirements() {
     "${_commit}"
   mv \
     "${HOME}/ethers.js-${_commit}.tar.gz" \
-    "/home/user/${_pkgname}"
+    "/home/user/${_pkgname}/ethers-${_commit}.tar.gz"
 }
 
 _build() {
