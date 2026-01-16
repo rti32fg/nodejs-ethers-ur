@@ -145,7 +145,7 @@ elif [[ "${_npm}" == "false" ]]; then
   _tag_name="commit"
   _tag="${_commit}"
 fi
-_tarname="${_pkg}-${pkgver}"
+_tarname="${_pkg}-${_tag}"
 _tarfile="${_tarname}.${_archive_format}"
 _npm_sum="f6c68a31f674674e4aed782c4f08d7a4ec8bc04738eee38d3e22ec94e129000e"
 _npm_sig_sum="c788b68873bf6bf5cdbceae61aa51f4a8b453033c31550179fe0ea27185271d2"
