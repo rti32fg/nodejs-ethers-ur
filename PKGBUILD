@@ -42,6 +42,7 @@ fi
 if [[ ! -v "_npm" ]]; then
   if [[ "${_evmfs}" == "true" ]]; then
     _npm="true"
+    _git_service="github"
   elif [[ "${_evmfs}" == "false" ]]; then
     _npm="false"
     _git="false"
