@@ -27,7 +27,7 @@
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
-_evmfs_available="$( \
+_evmfs_available="$(
   command \
     -v \
     "evmfs" || \
@@ -44,6 +44,7 @@ if [[ ! -v "_npm" ]]; then
     _npm="true"
   elif [[ "${_evmfs}" == "false" ]]; then
     _npm="false"
+    _git="false"
     _git_service="gitlab"
   fi
 fi
@@ -61,7 +62,6 @@ if [[ ! -v "_git" ]]; then
     _git="true"
   fi
 fi
-
 if [[ ! -v "_git_http" ]]; then
   if [[ "${_git_service}" == "github" ]]; then
     _git_http="github"
@@ -76,7 +76,6 @@ if [[ ! -v "_ns" ]]; then
     _ns="themartiancompany"
   fi
 fi
-
 if [[ ! -v "_archive_format" ]]; then
   if [[ "${_npm}" == "true" ]]; then
     _archive_format="tgz"
@@ -230,12 +229,12 @@ elif [[ "${_evmfs}" == "false" ]]; then
       _uri=""
       if [[ "${_git_service}" == "github" ]]; then
         if [[ "${_tag_name}" == "commit" ]]; then
-          _uri="${_url}/archive/${_commit}.${_archive_format}"
+          _uri="${url}/archive/${_commit}.${_archive_format}"
           _sum="${_github_sum}"
         fi
       elif [[ "${_git_service}" == "gitlab" ]]; then
         if [[ "${_tag_name}" == "commit" ]]; then
-          _uri="${_url}/-/archive/${_tag}/${_tag}.${_archive_format}"
+          _uri="${url}/-/archive/${_tag}/${_tag}.${_archive_format}"
         fi
       fi
     fi
