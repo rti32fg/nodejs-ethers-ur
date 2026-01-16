@@ -40,7 +40,11 @@ if [[ ! -v "_evmfs" ]]; then
   fi
 fi
 if [[ ! -v "_npm" ]]; then
-  _npm="false"
+  if [[ "${_evmfs}" == "true" ]]; then
+    _npm="true"
+  elif [[ "${_evmfs}" == "false" ]]; then
+    _npm="false"
+  fi
 fi
 if [[ ! -v "_source" ]]; then
   if [[ "${_npm}" == "true" ]]; then
