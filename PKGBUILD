@@ -133,10 +133,10 @@ conflicts=(
   "${_pkg}"
 )
 if [[ "${_npm}" == "true" ]]; then
-  _tagname="pkgver"
+  _tag_name="pkgver"
   _tag="${pkgver}"
 elif [[ "${_npm}" == "false" ]]; then
-  _tagname="commit"
+  _tag_name="commit"
   _tag="${_commit}"
 fi
 _tarname="${_pkg}-${pkgver}"
