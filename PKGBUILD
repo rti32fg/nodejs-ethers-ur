@@ -65,12 +65,18 @@ fi
 if [[ ! -v "_git_http" ]]; then
   if [[ "${_git_service}" == "github" ]]; then
     _git_http="github"
-    _ns="ethers-io"
   elif [[ "${_git_service}" == "gitlab" ]]; then
     _git_http="gitlab"
+  fi
+fi
+if [[ ! -v "_ns" ]]; then
+  if [[ "${_npm}" == "true" ]]; then
+    _ns="ethers-io"
+  elif [[ "${_npm}" == "false" ]]; then
     _ns="themartiancompany"
   fi
 fi
+
 if [[ ! -v "_archive_format" ]]; then
   if [[ "${_npm}" == "true" ]]; then
     _archive_format="tgz"
