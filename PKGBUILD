@@ -27,6 +27,9 @@
 #     <pellegrinoprevete@gmail.com>
 #     <dvorak@0x87003Bd6C074C713783df04f36517451fF34CBEf>
 
+_os="$(
+  uname \
+    -o)"
 _evmfs_available="$(
   command \
     -v \
@@ -122,7 +125,7 @@ depends=(
 makedepends=(
   "${_node}"
 )
-if [[ "${_npm}" == "true" ]]; then
+if [[ "${_os}" == "GNU/Linux" ]]; then
   makedepends+=(
     'npm'
   )
