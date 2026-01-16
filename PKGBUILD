@@ -49,7 +49,7 @@ fi
 if [[ ! -v "_source" ]]; then
   if [[ "${_npm}" == "true" ]]; then
     _source="npm"
-  elif [[ "${_npm}" == "true" ]]; then
+  elif [[ "${_npm}" == "false" ]]; then
     _source="github"
   fi
 fi
@@ -81,7 +81,7 @@ _node="nodejs"
 _pkg=ethers
 pkgname="${_node}-${_pkg}"
 pkgver=6.13.2
-pkgrel=7
+pkgrel=8
 _pkgdesc=(
   "A complete, compact and simple library"
   "for Ethereum and ilk, written in TypeScript."
