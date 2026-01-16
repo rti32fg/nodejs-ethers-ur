@@ -77,7 +77,7 @@ _node="nodejs"
 _pkg=ethers
 pkgname="${_node}-${_pkg}"
 pkgver=6.13.2
-pkgrel=4
+pkgrel=5
 _pkgdesc=(
   "A complete, compact and simple library"
   "for Ethereum and ilk, written in TypeScript."
