@@ -225,7 +225,19 @@ elif [[ "${_evmfs}" == "false" ]]; then
     _uri="${_npm_http}/@${_ns}/${_pkg}/-/${_tarfile}"
   elif [[ "${_npm}" == "false" ]]; then
     if [[ "${_git}" == "true" ]]; then
-      _uri="git+${url}#${_tag_name}=${_tag}"
+      _uri="git+${url}#${_tag_name}=${_tag}?signed"
+    elif [[ "${_git}" == false ]]; then
+      _uri=""
+      if [[ "${_git_service}" == "github" ]]; then
+        if [[ "${_tag_name}" == "commit" ]]; then
+          _uri="${_url}/archive/${_commit}.${_archive_format}"
+          _sum="${_github_sum}"
+        fi
+      elif [[ "${_git_service}" == "gitlab" ]]; then
+        if [[ "${_tag_name}" == "commit" ]]; then
+          _uri="${_url}/-/archive/${_tag}/${_tag}.${_archive_format}"
+        fi
+      fi
     fi
   fi
 fi
