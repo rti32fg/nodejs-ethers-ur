@@ -44,20 +44,27 @@ if [[ ! -v "_npm" ]]; then
     _npm="true"
   elif [[ "${_evmfs}" == "false" ]]; then
     _npm="false"
+    _git_service="gitlab"
   fi
 fi
 if [[ ! -v "_source" ]]; then
   if [[ "${_npm}" == "true" ]]; then
     _source="npm"
   elif [[ "${_npm}" == "false" ]]; then
-    _source="github"
+    _source="gitlab"
   fi
 fi
 if [[ ! -v "_git" ]]; then
   _git="false"
 fi
 if [[ ! -v "_git_http" ]]; then
-  _git_http="github"
+  if [[ "${_git_service}" == "github" ]]; then
+    _git_http="github"
+    _ns="ethers-io"
+  elif [[ "${_git_service}" == "gitlab" ]]; then
+    _git_http="gitlab"
+    _ns="themartiancompany"
+  fi
 fi
 if [[ ! -v "_archive_format" ]]; then
   if [[ "${_npm}" == "true" ]]; then
@@ -94,7 +101,6 @@ arch=(
   "any"
 )
 _http="https://${_git_http}.com"
-_ns="ethers-io"
 url="${_http}/${_ns}/${_pkg}.js"
 license=(
   "MIT"
@@ -114,12 +120,21 @@ provides=(
 conflicts=(
   "${_pkg}"
 )
+if [[ "${_npm}" == "true" ]]; then
+  _tagname="pkgver"
+  _tag="${pkgver}"
+elif [[ "${_npm}" == "false" ]]; then
+  _tagname="commit"
+  _tag="${_commit}"
+fi
 _tarname="${_pkg}-${pkgver}"
 _tarfile="${_tarname}.${_archive_format}"
 _npm_sum="f6c68a31f674674e4aed782c4f08d7a4ec8bc04738eee38d3e22ec94e129000e"
 _npm_sig_sum="c788b68873bf6bf5cdbceae61aa51f4a8b453033c31550179fe0ea27185271d2"
 _github_sum="075a261daa20d7560e764327e0abd4d3eecba11909f03a8cee4d39aad6dea945"
 _github_sig_sum="ac168c73698197e4b70125e5a6fd1afb962bc28d78075f3c498035cf8f973094"
+_gitlab_sum="SKIP"
+_gitlab_sig_sum="SKIP"
 _bundle_sum="SKIP"
 _bundle_sig_sum="SKIP"
 if [[ "${_npm}" == "true" ]]; then
@@ -130,6 +145,9 @@ elif [[ "${_npm}" == "false" ]]; then
     if [[ "${_source}" == "github" ]]; then
       _sum="${_github_sum}"
       _sig_sum="${_github_sig_sum}"
+    elif [[ "${_source}" == "gitlab" ]]; then
+      _sum="${_gitlab_sum}"
+      _sig_sum="${_gitlab_sig_sum}"
     fi
   elif [[ "${_git}" == "true" ]]; then
     _sum="${_bundle_sum}"
@@ -188,7 +206,9 @@ elif [[ "${_evmfs}" == "false" ]]; then
   if [[ "${_npm}" == "true" ]]; then
     _uri="${_npm_http}/@${_ns}/${_pkg}/-/${_tarfile}"
   elif [[ "${_npm}" == "false" ]]; then
-    _uri="${url}"
+    if [[ "${_git}" == "true" ]]; then
+      _uri="git+${url}#${_tag_name}=${_tag}"
+    fi
   fi
 fi
 _src="${_tarfile}::${_uri}"
